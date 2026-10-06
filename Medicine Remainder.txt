@@ -1,0 +1,66 @@
+#include <LiquidCrystal.h>
+
+// Define pins for LCD
+const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+// Define pins for buttons and LED
+const int push1 = A0;
+const int push2 = A1;
+const int push3 = A2;
+const int stopButton = A3;
+const int led = 10;  // LED instead of buzzer
+
+// Variable to track LED blinking state
+bool ledActive = false;
+
+void setup() {
+  lcd.begin(16, 2);
+  lcd.print("Take Medicine");
+  
+  pinMode(push1, INPUT);
+  pinMode(push2, INPUT);
+  pinMode(push3, INPUT);
+  pinMode(stopButton, INPUT);
+  pinMode(led, OUTPUT);
+}
+
+void loop() {
+  // Button 1
+  if (digitalRead(push1) == HIGH) {
+    lcd.clear();
+    lcd.print("Push 1 Pressed");
+    ledActive = true;
+  }
+
+  // Button 2
+  if (digitalRead(push2) == HIGH) {
+    lcd.clear();
+    lcd.print("Push 2 Pressed");
+  }
+
+  // Button 3
+  if (digitalRead(push3) == HIGH) {
+    lcd.clear();
+    lcd.print("Push 3 Pressed");
+    ledActive = true;
+  }
+
+  // Stop button
+  if (digitalRead(stopButton) == HIGH) {
+    ledActive = false;
+    digitalWrite(led, LOW);
+    lcd.clear();
+    lcd.print("LED Stopped");
+  }
+
+  // If LED is active, make it blink continuously
+  if (ledActive) {
+    digitalWrite(led, HIGH);
+    delay(300);
+    digitalWrite(led, LOW);
+    delay(300);
+  } else {
+    delay(100);
+  }
+}
